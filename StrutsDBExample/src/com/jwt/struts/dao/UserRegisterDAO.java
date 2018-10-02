@@ -1,39 +1,30 @@
 package com.jwt.struts.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class UserRegisterDAO {
+public class UserRegisterDAO extends BaseDao{
 	public void insertData(String firstName, String lastName, String userName,
-			String password, String email, String phone) throws Exception {
-		System.out.println("jdbc connection");
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection con = DriverManager.getConnection(
-				"jdbc:mysql://localhost/strutsdb", "root", "mukesh");
-
+		String password, String email, String phone) throws Exception {
+		Connection con = getDbConnection();
 		try {
-
 			try {
-				Statement st = con.createStatement();
-				int value = st
-						.executeUpdate("INSERT INTO USER_DETAILS(FIRST_NAME,LAST_NAME,USER_NAME,PASSWORD,EMAIL,PHONE) "
-								+ "VALUES('"
-								+ firstName
-								+ "','"
-								+ lastName
-								+ "','"
-								+ userName
-								+ "','"
-								+ password
-								+ "','"
-								+ email + "','" + phone + "')");
+				String sql = "INSERT INTO USER_DETAILS VALUES (?,?,?,?,?,?)";
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setString(1, firstName);
+				ps.setString(2, lastName);
+				ps.setString(3, userName);
+				ps.setString(4, password);
+				ps.setString(5, email);
+				ps.setString(6, phone);
+				int value = ps.executeUpdate();
 				System.out.println("1 row affected" + value);
 			} catch (SQLException ex) {
-				System.out.println("SQL statement is not executed!" + ex);
+				System.out.println("Prepared statement is not executed!" + ex);
+			}finally{
+				con.close();	
 			}
-			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
