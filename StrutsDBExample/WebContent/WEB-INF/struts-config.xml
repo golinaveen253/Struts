@@ -8,12 +8,31 @@
 <struts-config>
 	<form-beans>
 		<form-bean name="registerForm" type="com.jwt.struts.form.UserRegisterForm" />
+		<form-bean name="loginForm" type="com.jwt.struts.form.LoginForm" />
+		<form-bean name="homeForm" type="com.jwt.struts.form.HomeForm" />
 	</form-beans>
 
 	<action-mappings>
-		<action input="/login.jsp" name="registerForm" path="/register"
+		<action input="/register.jsp" name="registerForm" path="/register" scope="request"
 			type="com.jwt.struts.action.UserRegisterAction">
 			<forward name="success" path="/success.jsp" />
+		</action>
+		
+		<action input="/login.jsp" name="loginForm" path="/login" scope="request"
+			type="com.jwt.struts.action.LoginAction">
+			<forward name="success" path="/home.do" />
+			<forward name="error" path="/login.jsp" />
+		</action>
+		
+		<action input="/home.jsp" name="homeForm" path="/home" scope="request"
+			type="com.jwt.struts.action.HomeAction">
+			<forward name="success" path="/home.jsp" />
+			<forward name="error" path="/login.jsp" />
+		</action>
+		
+		
+		<action path="/home" name="homeForm" type="com.jwt.struts.action.HomeAction">
+			<forward name="success" path="/home.jsp" />
 		</action>
 	</action-mappings>
 
