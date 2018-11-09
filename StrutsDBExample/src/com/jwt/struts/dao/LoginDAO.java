@@ -1,5 +1,6 @@
 package com.jwt.struts.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +21,8 @@ public class LoginDAO extends BaseDao {
 				ps.setString(2, password);
 				
 				ResultSet rs = ps.executeQuery();
+				CallableStatement cs = con.prepareCall("");
+				
 				if(rs.next()){
 					user = new User();
 					user.setEmail(rs.getString("EMAIL"));
